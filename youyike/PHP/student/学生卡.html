@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery.min.js"></script>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        box-sizing: border-box;
+    }
+    .box{
+        width:1200px;
+        height:auto;
+        background-color: #ccffcc;
+        box-shadow: 0px 2px 2px 2px #ccffcc;
+        margin: auto;
+    }
+    .biaoti{
+        font-size: 40px;
+        line-height: 60px;
+        text-align: center;
+        border-bottom: 1px solid #33fffc;
+    }
+    .box>table{
+        width:100%;
+        height:auto;
+        text-align: center;
+    }
+    table tr{
+        width:100%;
+        height:40px;
+    }
+    table tr td{
+        width:20%;
+        height:100%;
+    }
+    table tr th{
+        width:20%;
+        height:100%;
+    }
+    button{
+        width:50px;
+        height: 50px;
+        position: fixed;
+        right: 20px;
+        top: 50px;
+        border-radius: 10px;
+        background-color: #ccffcc;
+        border: 0;
+    }
+</style>
+<body>
+<div class="box">
+    <div class="biaoti">学籍卡</div>
+    <table>
+        <thead>
+            <tr>
+                <th>学号</th>
+                <th>班级</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>功能键</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+    </table>
+    <button>添加</button>
+</div>
+</body>
+<script>
+    $(function () {
+        $.ajax({
+            url:"show.php",
+            dataType:"json",
+        }).done(function (rep) {
+            let str="";
+            $.each(rep,function (ind,val) {
+                str+=` <tr id="${val.id}">
+            <td class="id">${val.id}</td>
+            <td class="name">${val.name}</td>
+            <td class="age">${val.age}</td>
+            <td class="sex">${val.sex}</td>
+            <td><div class="del">删除</div></td>
+        </tr>`
+            });
+            $("tbody").html(str);
+    });
+        $("button").click(function () {
+            $.get("tianjia.php",function (rep) {
+                if(!isNaN(rep)){
+                    $(`<tr id="${rep}">`).html(
+                        `
+                        <td class="id">${rep}</td>
+                        <td class="name"></td>
+                        <td class="age"></td>
+                        <td class="sex"></td>
+                        <td><div class="del">删除</div></td>
+                        `
+                    ).appendTo($("tbody"));
+                }
+            })
+        })
+        $("tbody").delegate("div","click",function () {
+            let id=this.parentNode.parentNode.id;
+            $.get("delete.php",{id:id},function (rep) {
+                console.log(rep);
+            });
+            $("tbody").remove("#id");
+//            $("#id").remove();
+        })
+        $("tbody").on("click.td","td",function (e) {
+            console.log(1);
+            let mubiao=e.currentTarget;
+            console.log(mubiao);
+            let text=$(mubiao).text();
+            if(mubiao.nodeName=="TD"&&mubiao.children.length==0){
+                $(mubiao).html("");
+                $("<input>").css({
+                    width:"100px",
+                    height:"30px",
+                }).html(text).appendTo(mubiao).focus().blur(function () {
+                    $(mubiao).remove("input");
+                    let id=$(mubiao).parent().attr("id");
+                    console.log(id);
+                    let value=$(this).val();
+                    console.log(value);
+                    $(mubiao).html($(this).val());
+                    let Type=$(mubiao).attr("class");
+                    console.log(Type);
+                    $.get("update.php",{id:id,Type:Type,value:value},function (repsontext) {
+                        console.log(repsontext);
+                    })
+                })
+            }
+        })
+
+
+    })
+</script>
+</html>

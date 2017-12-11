@@ -1,0 +1,38 @@
+rvice: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php NotCheckVirtualHost on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[NotCheckDuplicate]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php NotCheckDuplicate on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[VhostAllLocalIp]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php VhostAllLocalIp on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[HomepageAtStartup]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php HomepageAtStartup on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[MenuItemOnline]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php MenuItemOnline off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[ItemServicesNames]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchWampParam.php ItemServicesNames on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/script

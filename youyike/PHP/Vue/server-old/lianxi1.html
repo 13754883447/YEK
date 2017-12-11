@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Document</title>
+    <script src="../../Vue.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+
+    #el {
+        height: 100%;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    body {
+        background: #eee;
+        height: 100%;
+    }
+
+    .header {
+        height: 40px;
+        background: black;
+    }
+
+    .content {
+        position: relative;
+    }
+
+    .note {
+        overflow: hidden;
+        border-radius: 3px;
+        position: absolute;
+        top: 100px;
+        left: 200px;
+        width: 200px;
+        box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
+    }
+
+    /*.note.red {*/
+    /*border: 1px solid #dc2f23;*/
+    /*}*/
+
+    .note.red .title {
+        background: #dc2f23;
+    }
+
+    /*.note.blue {*/
+    /*border: 1px solid #3768fb;*/
+    /*}*/
+
+    .note.blue .title {
+        background: #3768fb;
+    }
+
+    /*.note.green {*/
+    /*border: 1px solid #359933;*/
+    /*}*/
+
+    .note.green .title {
+        background: #359933;
+    }
+
+    /*.note.orange {*/
+    /*border: 1px solid #f6b200;*/
+    /*}*/
+
+    .note.orange .title {
+        background: #f6b200;
+    }
+
+    .note.active {
+        z-index: 10000;
+        box-shadow: 1px 5px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .note .title {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: move;
+        font-size: 14px;
+        color: white;
+        text-align: center;
+        line-height: 36px;
+        font-weight: normal;
+        height: 36px;
+    }
+
+    .note .content {
+        padding: 20px;
+        min-height: 200px;
+        background: #fff;
+        color: #666;
+    }
+
+    .note textarea {
+        font-family: Consolas, Sana, sans-serif;
+        border: none;
+        min-height: 100px;
+        font-size: 13px;
+        width: 100%;
+        outline: none;
+        resize: none;
+    }
+</style>
+<body>
+<div id="el" @dbclick="addNote" @mouseup="mu" @mousemove="mv">
+    <div class="header">
+        <div class="content">
+                <div :class="`note ${v.theme} ${i==moveEvent.index?'active':''}`" v-for="(v,i) in notes"
+                     :key="v.id"
+                     :style="{top:v.t+'px',left:v.l+'px'}">
+                <h3 class="title" @mousedown.prevent.stop="md(i,$event)">
+                    {{v.title}}
+                </h3>
+                <div class="content">
+                    <textarea v-model="v.content"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    let colors = ['red', 'green', 'blue', 'yellow'];
+    let app = new Vue({
+        el: '#el',
+        data: {
+            notes: [
+//                {id: 1, title: '便签1', content: '这是便签1', t: 40, l: 10, theme: 'red'},
+//                {id: 2, title: '便签2', content: '这是便签2', t: 40, l: 300, theme: 'blue'}
+                ],
+            moveEvent: {state: false, index: null, position: {}}
+        },
+        methods: {
+            md: function (i, e) {
+                this.moveEvent.index=i;
+                this.moveEvent.position={
+                    x:e.offsetX,
+                    y:e.offsetY
+                };
+                this.moveEvent.state=true;
+            },
+            mv:function (e) {
+                if(this.moveEvent.state){
+                    let id=moveEvent.id;
+                    let top=e.clientY-40-this.moveEvent.position.y;//减去偏差
+                    let left=e.clientX-this.moveEvent.position.x;
+                    this.notes[this.moveEvent.index].t=top;
+                    this.notes[this.moveEvent.index].l=left;
+                    this.update(id,left,top);
+                }
+            },
+            mu: function () {
+                this.moveEvent.state = false;
+            },
+            save(id,title,content,l,t){
+                fetch('save_notes',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id:id,title:title,cont:content,l:l,t:t})
+                })
+                    .then(res=>json())
+                    .then(r=>{
+                        if (r.code === 2) {
+                            console.log(r.message);
+                        } else {
+                            if (r.code === 4) {
+                                console.log(r.message);
+                            }
+                        }
+                        }
+                    )
+            },
+            update:function (id,l,t) {
+                fetch('/update_notes',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id:id,l:l,t:t})
+                })
+                    .then(res=>json())
+                    .then(r=>{
+                        if (r.code === 2) {
+                            console.log(r.message);
+                        } else {
+                            if (r.code === 4) {
+                                console.log(r.message);
+                            }
+                        }
+                    })
+            },
+            updatecontent:function (id,content) {
+                fetch('/update_notes',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id:id,content:content})
+                })
+                    .then(res=>json())
+                    .then(r=>{
+                        if (r.code === 2) {
+                            console.log(r.message);
+                        } else {
+                            if (r.code === 4) {
+                                console.log(r.message);
+                            }
+                        }
+                    })
+            },
+            addNote:function (e) {
+                let
+                    id=this.notes.length?(this.notes[this.notes.length-1].id+1):1,
+                    t=e.clientY-40-18,
+                    l=e.clientX-100,
+                    title='便签'+id,
+                    content=this.content;
+                    theme=colors[Math.floor(Math.random()*colors.length)];
+                this.notes.push({id,title,t,l,theme});
+                this.save(id,title,content,l,t);
+            },
+            mounted:function () {
+                doucument.onkeyup=(function (e) {
+                  if(this.moveEvent.index!=null&&e.keyCode===8){
+                      this.notes.splice(this.moveEvent.index,1);
+                      this.moveEvent.index=this.notes.length?this.notes.length-1:null;
+                      this.updatecontent();
+                    }
+                }).bind(this);
+                fetch('/select_bianqian')
+                    .then(res=>json())
+                    .then(r=>this.notes=r)
+            }
+        }
+
+    })
+</script>

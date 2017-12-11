@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div><?php echo $text; ?>若 <span>5</span>秒后未跳转，请 <a href="<?php echo $hr;?>">立即点击</a> </div>
+</body>
+<script>
+    let span=document.querySelector('span');
+    t=setInterval(time,1000);
+    var n=5;
+    function time() {
+        n--;
+        span.innerHTML=n;
+        if(n==0){
+            location.href=document.querySelector("a").href;
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery.min.js"></script>
+</head>
+<body>
+<form action="check.php">
+    账号:<input type="text" name="username"><span class="mess"></span>
+    密码:<input type="password" name="password">
+    <!--<input type="password" name="passwordtoo">-->
+    验证码:<input type="text" name="yanzhengma">
+    <img src="yanzhengma.php" alt="" onclick="this.src='yanzhengma.php?aa='+Math.random()">
+    <input type="submit" value="注册">
+</form>
+
+</body>
+<script>
+    var username=$("input[name=username]");
+    let password=$("input[name=password]");
+    let passwordtoo=$("input[name=passwordtoo]");
+    username.blur(function () {
+       if (!username.val()){
+           alert("请输入账号");
+           return;
+       }else{
+           $.get("signcheck.php",{username:$(this).val()},(response) => {
+               if(response == 1){
+                   $(this).attr("able","yes");
+                   $('.mess').html('账号可用');
+               }else if(response == 0){
+                   $(this).attr('able', 'no');
+                   $('.mess').html('账号已存在');
+               }
+           })
+       }
+    }).focus(function () {
+        $(this).attr('able', 'no');
+        $('.mess').html('');
+    }),
+    $('input[type=submit]').click(function (e) {
+        e.preventDefault();
+        if(username.attr('able')=='yes'){
+            $('form').submit();
+        }else{
+            alert('请输入正确的账号');
+        }
+    })
+</script>
+</html>

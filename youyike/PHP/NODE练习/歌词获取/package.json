@@ -1,0 +1,15 @@
+{
+  "name": "",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "init": "^0.1.2",
+    "querystring": "^0.2.0",
+    "request": "^2.81.0",
+    "url": "^0.11.0"
+  },
+  "scripts": {
+    "test": "node lrc.js"
+  },
+  "version": ""
+}

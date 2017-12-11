@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery.min.js"></script>
+</head>
+<style>
+    body{
+        background: url(302205.jpg) no-repeat;
+        background-size: cover;
+    }
+    .beijing{
+        width: 1000px;
+        height: 600px;
+        margin: 0 auto  ;
+    }
+    .heath{
+        width:100px;
+        height:50px;
+        position: fixed;
+        line-height:50px;
+        top: 0;
+        left: 0;
+        font-size: 18px;
+        color: white;
+        background: #ff9511;
+        text-align: center;
+    }
+    .fenshu{
+        width:100px;
+        height:50px;
+        line-height: 50px;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        font-size: 18px;
+        color: #000;
+        background: #0ed6fa;
+        text-align: center;
+    }
+    .start{
+        width:200px;
+        height:50px;
+        line-height: 50px;
+        position: fixed;
+        bottom: 150px;
+        right: 200px;
+        font-size: 18px;
+        color: #000;
+        background: green;
+        text-align: center;
+        cursor: pointer;
+        opacity: 1;
+        transition: all 2s;
+    }
+    .opacity{
+        opacity: 0;
+        pointer-events: none;
+    }
+    .jizhunxina{
+        width: 1000px;
+        height:1px;
+        border-top: 5px solid red;
+        position: absolute;
+        bottom: 91px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+</style>
+<body>
+<div class="heath"><span>生命值</span><span class="heath1">10</span></div>
+<div class="fenshu"><span>分数</span><span>0</span></div>
+<div class="start">开始游戏</div>
+<div class="jizhunxina"></div>
+</body>
+</html>
+<script>
+        var heath1=document.querySelector(".heath1");//获取生命值
+        var fenshu=document.querySelector(".fenshu")//获取分数板
+		function Dzyx(heath1,fenshu) {//传入分数
+			this.length=5;//长度 一次出现的
+            this.arr=[];//建一个空数组，用来保存img
+            this.speed=10;//速度
+            this.heath1=10;//生命值
+            this.heath1obj=heath1;//生命值的对象
+            this.fenshu=0;
+            this.fenshuobj=fenshu;
+		}
+		Dzyx.prototype = {//dzyx的原型对象t
+			play: function () {
+				this.Getletter();
+				this.move();
+				this.keydown();
+
+			},
+			Getletter: function () {//
+				for (var i = 0; i < this.length; i++) {//for循环
+					this.Getrandom();//循环此函数
+				}
+			},
+			Getrandom: function () {
+				var img = document.createElement("img")//创建一个图片
+				do {
+					var code = Math.round(Math.random() * 25) + 65;//图片范围 A=65,Z=90;
+					var letter = String.fromCharCode(code);//把产生的数转换为字符串的A-Z；
+				} while (this.check(letter))//检测有没有一样的
+				img.src = `A_Z/${letter}.png`;//图片的获取路径
+				document.body.appendChild(img);//在页面中追加一个img
+				//img 的css样式
+				img.style.cssText = `
+                position:absolute;
+                left:${Math.random() * 1000 + 100}px;
+                top:${Math.random() * 50 + 20}px;
+            `;
+				img.alt = "letter";//给img加一个属性,是letter  来识别
+				this.arr.push(img);//给空数组中放入Img
+
+			},
+			check: function (letter) {//检测函数
+				return this.arr.some(function (value) {//返回值是检测函数
+					return value.alt == letter;//有没有一样的img
+				})
+			},
+			move: function () {//让他动起来,时间函数
+				var that = this;//数据互通,这个是那个
+				this.t = setInterval(function () {//时间函数
+					for (var i = 0; i < that.arr.length; i++) {//循环每个,最大是外面img的长度
+						var newheight = that.arr[i].offsetTop;//声明每个img离body得高度
+//                        console.log(newheight);
+						var newtop = newheight + that.speed;
+						that.arr[i].style.top = newtop + "px";//每个img的新的高度
+						if (newtop >= 500) {//当top值到500的时候
+							that.heath1--;//生命值减1
+							that.heath1obj.innerHTML = that.heath1;//在页面同步,在对象后面
+
+							document.body.removeChild(that.arr[i]);//并删除这个子元素
+							that.arr.splice(i, 1);//在数组中裁减掉i个
+							that.Getrandom();//删除了立马重新出现一个新的
+							if (that.heath1 <= 0) {//当生命值小于0的时候
+								alert("Game Over");//弹出游戏结束
+								clearInterval(that.t);//并且清除时间函数
+								return;//啥都不执行了
+							}
+						}
+					}
+				}, 200)
+			},
+			keydown: function () {//keydown函数
+				let that = this;//互通
+				document.onkeydown = function (e) {//键盘按下
+					var key = e.key;//获取按下的数值,获取的是小写
+					var letter = key.toUpperCase();//转换成大写
+					var index = that.arr.findIndex(function (value) {//查找数组中和他一样值的下标
+						return value.alt = letter;//和他一样值
+					})
+					if (index != -1) {//因为findex查找不到的话是-1
+						document.body.removeChild(that.arr[index]);//在页面中消除这个dom对象
+						that.arr.splice(index, 1)//并且在数组中也消除；
+						that.fenshu++;//分数++
+						that.fenshuobj.innerHTML = that.fenshu;//页面中显示
+						that.Getrandom();//在获取一个新的字母;
+
+						if (that.fenshu > 10) {//如果分数大于10
+							let result = confirm("恭喜您过关,是否进入下一关?")//弹出过关对话框
+							if (result) {
+								that.next();//进入下一关
+							} else {
+								window.close();//页面关闭
+							}
+						}
+					}
+				}
+			},
+			next: function () {//下一关函数
+				clearInterval(this.t);//清除t,时间函数
+				this.arr.forEach(function (value) {//数组遍历
+					document.body.removeChild(value); //删除所有页面的数组
+				})
+				this.heath1++;//生命值+1
+				this.heath1.innerHTML=this.heath1;//生命值的对象
+				this.arr=[];//把arr清空
+				this.speed+=1;//速度加+1
+				this.length+=1;//长度+1
+				this.fenshu=0;//分数初始为0
+				this.fenshu.innerHTML=this.fenshu;//分数的对象
+				this.play();//重新执行play,里面的所有函数
+			}
+		}
+    var obj=new Dzyx(heath1,fenshu);//传实际参数
+
+    let start=document.querySelector(".start");//开始按钮
+    start.onclick=function () {//当点击开始游戏
+		start.classList.add("opacity");//给start按钮加上一个新的类
+		obj.play();//play才会运行
+    }
+
+</script>

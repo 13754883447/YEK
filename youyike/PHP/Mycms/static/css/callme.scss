@@ -1,0 +1,43 @@
+$re:relative;
+$ab:absolute;
+$max:100%;
+$neikuan:1200px;
+$juzhong:0 auto;
+$wtcolor:white;
+.Ab-1{
+  width: $max;
+  background: url(../images/bg-image-1.jpg) no-repeat;
+  background-size: cover;
+}
+.Ab-1body{
+  max-width: $neikuan;
+  height: 335px;
+  margin: $juzhong;
+  color: $wtcolor;
+  text-align: center;
+  position: $re;
+  >h2{
+    position: $ab;
+    top:30%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size:50px;
+  }
+  >p{
+    position: $ab;
+    top:50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 25px;
+    font-size: 18px;
+    >a{
+      text-decoration: none;
+    }
+  }
+}
+.form{
+    padding: 25px;
+    text-align: center;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "aftroon",
+  "version": "1.0.0",
+  "description": "'这是test'",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.81.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

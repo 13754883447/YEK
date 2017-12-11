@@ -1,0 +1,15 @@
+.box {
+  width: 100%; }
+
+.body {
+  width: 1200px;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border: 1px solid #ccc; }
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  border-bottom: 1px solid #ccc; }

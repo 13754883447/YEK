@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../Vue.js"></script>
+</head>
+<style>
+    .go{
+        color: #0ed6fa;
+    }
+</style>
+<body>
+<div id="vue" v-cloak>{{text}}
+    <span v-html="html"></span>
+    <span v-show="show">show</span>
+    <span v-if="database.length>10">大于10</span>
+    <span v-else-if="database.length<5&&database.length>10">5以上</span>
+    <span v-else="database.length<5">小于5</span>
+    <span v-for="v in array">{{v}}</span>
+    <span v-on:click.prevent.stop="click">点击阻止冒泡</span>
+    <span v-bind:class="go">绑定点击</span>
+    <div v-once>{{message}}</div>v-once只改变一次
+    <input type="text" v-model="message">
+    <div v-bind:style="style">XXXXX</div>
+    <div v-pre>{{text}}</div>
+</div>
+</body>
+<script>
+    let vue=new Vue({
+        el:'#vue',
+        data:{
+            message:"信息",
+            database:[],
+            text:'武银银坚持！',
+            html:"<h1>别瞌睡</h1>",
+            show:true,
+            array:[231,45,564,12],
+            go:"go",
+            style:{
+                color:'red'
+            }
+        },
+        methods:{
+            click:function () {
+                alert(1)
+            },
+
+        }
+    })
+</script>
+</html>

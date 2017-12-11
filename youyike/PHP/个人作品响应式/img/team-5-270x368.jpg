@@ -1,0 +1,508 @@
+es
+Action: readconfig;
+
+;WAMPSETTINGSEND
+
+[Menu.Left]
+;WAMPMENULEFTSTART
+Type: separator; Caption: "Made in France by Otomatic"
+Type: item; Caption: "Localhost"; Action: run; FileName: "C:/Program Files (x86)/Internet Explorer/iexplore.exe"; Parameters: "http://localhost/"; Glyph: 27
+Type: item; Caption: "phpMyAdmin"; Action: run; FileName: "C:/Program Files (x86)/Internet Explorer/iexplore.exe"; Parameters: "http://localhost/phpmyadmin/"; Glyph: 28
+;WAMPVHOSTSUBMENU
+Type: submenu; Caption: "Your VirtualHosts"; Submenu: myVhostsMenu; Glyph: 3
+
+;WAMPALIASSUBMENU
+;WAMPPROJECTSUBMENU
+
+Type: item; Caption: "www 目录"; Action: shellexecute; FileName: "F:/wamp64/www"; Glyph: 2
+Type: submenu; Caption: "Apache"; SubMenu: apacheMenu; Glyph: 3
+Type: submenu; Caption: "PHP"; SubMenu: phpMenu; Glyph: 3
+Type: submenu; Caption: "MySQL"; SubMenu: mysqlMenu; Glyph: 3
+Type: separator; Caption: "64bit - Quick Admin"
+Type: item; Caption: "启动所有服务"; Action: multi; Actions: StartAll
+Type: item; Caption: "停止所有服务"; Action: multi; Actions: StopAll
+Type: item; Caption: "重新启动所有服务"; Action: multi; Actions: RestartAll
+Type: separator;
+Type: item; Caption: "切换到离线状态"; Action: multi; Actions: onlineoffline
+;Type: item; Caption: "For local test only"; Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe"; Parameters: "test.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated; Glyph: 9
+;WAMPMENULEFTEND
+
+
+[myVhostsMenu]
+;WAMPVHOSTMENUSTART
+Type: separator; Caption: "Your VirtualHosts"
+Type: item; Caption: "localhost"; Action: run; FileName: "C:/Program Files (x86)/Internet Explorer/iexplore.exe"; Parameters: "http://localhost/"; Glyph: 27
+
+;WAMPVHOSTMENUEND
+
+
+
+[apacheMenu]
+;WAMPAPACHEMENUSTART
+Type: submenu; Caption: "Version"; SubMenu: apacheVersion; Glyph: 3
+Type: submenu; Caption: "Service administration"; SubMenu: apacheService; Glyph: 3
+Type: submenu; Caption: "Apache 模块"; SubMenu: apache_mod; Glyph: 25
+Type: submenu; Caption: "Alias 目录"; SubMenu: alias_dir; Glyph: 3
+Type: item; Caption: "httpd.conf"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/bin/apache/apache2.4.23/conf/httpd.conf"
+Type: item; Caption: "httpd-vhosts.conf"; Glyph: 33; Action: run; Filename: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/bin/apache/apache2.4.23/conf/extra/httpd-vhosts.conf"
+Type: item; Caption: "Apache 错误日志"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/logs/apache_error.log"
+Type: item; Caption: "Apache 访问日志"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/logs/access.log"
+;Type: separator; Caption: "Port used by Apache: 80"
+;Type: item; Caption: "测试 80 端口"; Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe"; Parameters: "testPort.php 80 wampapache64";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated; Glyph: 24
+;Type: item; Caption: "Use a port other than 80"; Action: multi; Actions: UseAlternatePort; Glyph: 24
+;Type: item; Caption: "Test port used: 80"; Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe"; Parameters: "testPort.php 80 wampapache64";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated; Glyph: 24
+;WAMPAPACHEMENUEND
+
+[apacheVersion]
+;WAMPAPACHEVERSIONSTART
+Type: item; Caption: "2.4.23"; Action: multi; Actions:switchApache2.4.23; Glyph: 13
+[switchApache2.4.23]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: ignoreerrors waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/apache/apache2.4.23/bin/httpd.exe"; Parameters: "-n wampapache64 -k unisntall"; ShowCmd: hidden; Flags: ignoreerrors waituntilterminated
+Action: closeservices; Flags: ignoreerrors
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "switchApacheVersion.php 2.4.23";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpVersion.php 7.0.10";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/apache/apache2.4.23/bin/httpd.exe"; Parameters: "-n wampapache64 -k install"; ShowCmd: hidden; Flags: waituntilterminated
+Action: run; Filename: "sc"; Parameters: "\\. config wampapache64 start= demand"; ShowCmd: hidden; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "switchWampPort.php 80";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "onlineOffline.php on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+
+;WAMPAPACHEVERSIONEND
+
+[phpMenu]
+;WAMPPHPMENUSTART
+Type: submenu; Caption: "Version"; SubMenu: phpVersion; Glyph: 3
+Type: submenu; Caption: "PHP 设置"; SubMenu: php_params; Glyph: 25
+Type: submenu; Caption: "PHP 扩展"; SubMenu: php_ext; Glyph: 25
+Type: item; Caption: "php.ini"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/bin/apache/apache2.4.23/bin/php.ini"
+Type: item; Caption: "PHP 错误日志"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/logs/php_error.log"
+;WAMPPHPMENUEND
+
+[phpVersion]
+;WAMPPHPVERSIONSTART
+Type: item; Caption: "5.6.25"; Action: multi; Actions:switchPhp5.6.25
+Type: item; Caption: "7.0.10"; Action: multi; Actions:switchPhp7.0.10; Glyph: 13
+[switchPhp5.6.25]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: ignoreerrors waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpVersion.php 5.6.25";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "switchMysqlPort.php 3306";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[switchPhp7.0.10]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: ignoreerrors waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpVersion.php 7.0.10";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "switchMysqlPort.php 3306";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+
+;WAMPPHPVERSIONEND
+
+[mysqlMenu]
+;WAMPMYSQLMENUSTART
+Type: submenu; Caption: "Version"; SubMenu: mysqlVersion; Glyph: 3
+Type: submenu; Caption: "Service administration"; SubMenu: mysqlService; Glyph: 3
+Type: submenu; Caption: "MySQL settings"; SubMenu: mysql_params; Glyph: 25
+Type: item; Caption: "MySQL 控制台"; Action: run; FileName: "F:/wamp64/bin/mysql/mysql5.7.14/bin/mysql.exe"; Parameters: "-u root -p"; Glyph: 0
+Type: item; Caption: "my.ini"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/bin/mysql/mysql5.7.14/./my.ini"
+Type: item; Caption: "MySQL 日志"; Glyph: 33; Action: run; FileName: "C:/Windows/notepad.exe"; parameters: "F:/wamp64/logs/mysql.log"
+;Type: separator; Caption: "Port used by MySQL: 3306"
+;Type: item; Caption: "Test port 3306"; Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe"; Parameters: "testPort.php 3306 wampmysqld64";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated; Glyph: 24
+;Type: item; Caption: "Use a port other than 3306"; Action: multi; Actions: UseAlternateMysqlPort; Glyph: 24
+;Type: item; Caption: "Test MySQL port used: 3306"; Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe"; Parameters: "testPort.php 3306 wampmysqld64";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated; Glyph: 24
+;WAMPMYSQLMENUEND
+
+[mysqlVersion]
+;WAMPMYSQLVERSIONSTART
+Type: item; Caption: "5.7.14"; Action: multi; Actions:switchMysql5.7.14; Glyph: 13
+
+;WAMPMYSQLVERSIONEND
+
+[mysql_params]
+Type: separator; Caption: "MySQL settings"
+;WAMPMYSQL_PARAMSSTART
+Type: submenu; Caption: "key_buffer_size = 64M"; Submenu: key_buffer_size; Glyph: 9
+Type: submenu; Caption: "log_error_verbosity = 2 - Errors and warnings"; Submenu: log_error_verbosity; Glyph: 9
+Type: submenu; Caption: "max_allowed_packet = 16M"; Submenu: max_allowed_packet; Glyph: 9
+Type: submenu; Caption: "innodb_lock_wait_timeout = 60"; Submenu: innodb_lock_wait_timeout; Glyph: 9
+Type: submenu; Caption: "sort_buffer_size = 2M"; Submenu: sort_buffer_size; Glyph: 9
+Type: separator; Caption: "sql-mode:  by default"
+Type: item; Caption: "ONLY_FULL_GROUP_BY"; Action: multi; Actions: none
+Type: item; Caption: "STRICT_TRANS_TABLES"; Action: multi; Actions: none
+Type: item; Caption: "NO_ZERO_IN_DATE"; Action: multi; Actions: none
+Type: item; Caption: "NO_ZERO_DATE"; Action: multi; Actions: none
+Type: item; Caption: "ERROR_FOR_DIVISION_BY_ZERO"; Action: multi; Actions: none
+Type: item; Caption: "NO_AUTO_CREATE_USER"; Action: multi; Actions: none
+Type: item; Caption: "NO_ENGINE_SUBSTITUTION"; Action: multi; Actions: none
+Type: submenu; Caption: "sql-mode"; Submenu: sql-mode; Glyph: 9
+Type: separator; Caption: "For information only"
+Type: item; Caption: "basedir = F:/wamp64/bin/mysql/mysql5.7.14"; Glyph: 22; Action: multi; Actions: basedir
+Type: item; Caption: "datadir = F:/wamp64/bin/mysql/mysql5.7.14/data"; Glyph: 22; Action: multi; Actions: datadir
+Type: item; Caption: "lc-messages = en_US"; Glyph: 22; Action: multi; Actions: lc-messages
+[basedir]
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "msg.php 6 YmFzZWRpcg== CgpUaGlzIHNldHRpbmcgc2hvdWxkIG5vdCBiZSBjaGFuZ2VkLCBvdGhlcndpc2UgeW91IHJpc2sgbG9zaW5nIHlvdXIgZXhpc3RpbmcgZGF0YWJhc2VzLgoK";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+[datadir]
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "msg.php 6 ZGF0YWRpcg== CgpUaGlzIHNldHRpbmcgc2hvdWxkIG5vdCBiZSBjaGFuZ2VkLCBvdGhlcndpc2UgeW91IHJpc2sgbG9zaW5nIHlvdXIgZXhpc3RpbmcgZGF0YWJhc2VzLgoK";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+[lc-messages]
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "msg.php 6 bGMtbWVzc2FnZXM= CgpUbyBzZXQgdGhlIEVycm9yIE1lc3NhZ2UgTGFuZ3VhZ2Ugc2VlOgoKaHR0cDovL2Rldi5teXNxbC5jb20vZG9jL3JlZm1hbi81LjcvZW4vZXJyb3ItbWVzc2FnZS1sYW5ndWFnZS5odG1sCgo=";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+[key_buffer_size]
+Type: separator; Caption: "Size"
+Type: item; Caption: "16M"; Action: multi; Actions: key_buffer_size16M
+Type: item; Caption: "32M"; Action: multi; Actions: key_buffer_size32M
+Type: item; Caption: "64M"; Action: multi; Actions: key_buffer_size64M
+Type: item; Caption: "Choose"; Action: multi; Actions: key_buffer_sizeChoose
+[key_buffer_size16M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes key_buffer_size 16M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[key_buffer_size32M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes key_buffer_size 32M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[key_buffer_size64M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes key_buffer_size 64M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[key_buffer_sizeChoose]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes key_buffer_size %Size% Size";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[log_error_verbosity]
+Type: separator; Caption: "Number"
+Type: item; Caption: "1 - Errors only"; Action: multi; Actions: log_error_verbosity1
+Type: item; Caption: "2 - Errors and warnings"; Action: multi; Actions: log_error_verbosity2
+Type: item; Caption: "3 - Errors, warnings, and notes"; Action: multi; Actions: log_error_verbosity3
+[log_error_verbosity1]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes log_error_verbosity 1";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[log_error_verbosity2]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes log_error_verbosity 2";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[log_error_verbosity3]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes log_error_verbosity 3";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[max_allowed_packet]
+Type: separator; Caption: "Size"
+Type: item; Caption: "16M"; Action: multi; Actions: max_allowed_packet16M
+Type: item; Caption: "32M"; Action: multi; Actions: max_allowed_packet32M
+Type: item; Caption: "64M"; Action: multi; Actions: max_allowed_packet64M
+Type: item; Caption: "Choose"; Action: multi; Actions: max_allowed_packetChoose
+[max_allowed_packet16M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes max_allowed_packet 16M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[max_allowed_packet32M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes max_allowed_packet 32M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[max_allowed_packet64M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes max_allowed_packet 64M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[max_allowed_packetChoose]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes max_allowed_packet %Size% Size";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[innodb_lock_wait_timeout]
+Type: separator; Caption: "Seconds"
+Type: item; Caption: "20"; Action: multi; Actions: innodb_lock_wait_timeout20
+Type: item; Caption: "30"; Action: multi; Actions: innodb_lock_wait_timeout30
+Type: item; Caption: "50"; Action: multi; Actions: innodb_lock_wait_timeout50
+Type: item; Caption: "120"; Action: multi; Actions: innodb_lock_wait_timeout120
+Type: item; Caption: "Choose"; Action: multi; Actions: innodb_lock_wait_timeoutChoose
+[innodb_lock_wait_timeout20]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes innodb_lock_wait_timeout 20";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[innodb_lock_wait_timeout30]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes innodb_lock_wait_timeout 30";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[innodb_lock_wait_timeout50]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes innodb_lock_wait_timeout 50";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[innodb_lock_wait_timeout120]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes innodb_lock_wait_timeout 120";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[innodb_lock_wait_timeoutChoose]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes innodb_lock_wait_timeout %Seconds% Seconds";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sql-mode]
+Type: separator; Caption: "sql-mode"
+Type: item; Caption: "sql-mode -> user mode"; Action: multi; Actions: sql-modeuser
+Type: item; Caption: "sql-mode -> none"; Action: multi; Actions: sql-modenone
+[sql-modeuser]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes sql-mode user";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sql-modenone]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes sql-mode none";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sort_buffer_size]
+Type: separator; Caption: "Size"
+Type: item; Caption: "2M"; Action: multi; Actions: sort_buffer_size2M
+Type: item; Caption: "4M"; Action: multi; Actions: sort_buffer_size4M
+Type: item; Caption: "16M"; Action: multi; Actions: sort_buffer_size16M
+Type: item; Caption: "Choose"; Action: multi; Actions: sort_buffer_sizeChoose
+[sort_buffer_size2M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes sort_buffer_size 2M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sort_buffer_size4M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes sort_buffer_size 4M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sort_buffer_size16M]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "changeMysqlParam.php noquotes sort_buffer_size 16M";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[sort_buffer_sizeChoose]
+Action: service; Service: wampmysqld64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "changeMysqlParam.php noquotes sort_buffer_size %Size% Size";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampmysqld64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+
+;WAMPMYSQL_PARAMSEND
+
+[alias_dir]
+;WAMPALIAS_DIRSTART
+Type: separator; Caption: "Alias 目录"
+Type: item; Caption: "添加一个 Alias"; Action: multi; Actions: add_alias; Glyph: 34
+Type: separator
+Type: submenu; Caption: "http://localhost/adminer/"; SubMenu: alias_adminer; Glyph: 3
+Type: submenu; Caption: "http://localhost/phpmyadmin/"; SubMenu: alias_phpmyadmin; Glyph: 3
+Type: submenu; Caption: "http://localhost/phpsysinfo/"; SubMenu: alias_phpsysinfo; Glyph: 3
+
+[alias_adminer]
+Type: separator; Caption: "adminer"
+Type: item; Caption: "Edit alias"; Glyph: 33; Action: multi; Actions: edit_adminer
+Type: item; Caption: "Suppress alias"; Glyph: 32; Action: multi; Actions: delete_adminer
+
+[alias_phpmyadmin]
+Type: separator; Caption: "phpmyadmin"
+Type: item; Caption: "Edit alias"; Glyph: 33; Action: multi; Actions: edit_phpmyadmin
+Type: item; Caption: "Suppress alias"; Glyph: 32; Action: multi; Actions: delete_phpmyadmin
+
+[alias_phpsysinfo]
+Type: separator; Caption: "phpsysinfo"
+Type: item; Caption: "Edit alias"; Glyph: 33; Action: multi; Actions: edit_phpsysinfo
+Type: item; Caption: "Suppress alias"; Glyph: 32; Action: multi; Actions: delete_phpsysinfo
+
+[delete_adminer]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "deleteAlias.php adminer";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[edit_adminer]
+Action: run; FileName: "C:/Windows/notepad.exe"; parameters:"F:/wamp64/alias/adminer.conf"; Flags: waituntilterminated
+Action: service; Service: wampapache64; ServiceAction: restart;
+
+[delete_phpmyadmin]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "deleteAlias.php phpmyadmin";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[edit_phpmyadmin]
+Action: run; FileName: "C:/Windows/notepad.exe"; parameters:"F:/wamp64/alias/phpmyadmin.conf"; Flags: waituntilterminated
+Action: service; Service: wampapache64; ServiceAction: restart;
+
+[delete_phpsysinfo]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "deleteAlias.php phpsysinfo";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[edit_phpsysinfo]
+Action: run; FileName: "C:/Windows/notepad.exe"; parameters:"F:/wamp64/alias/phpsysinfo.conf"; Flags: waituntilterminated
+Action: service; Service: wampapache64; ServiceAction: restart;
+
+;WAMPALIAS_DIREND
+
+
+[php_params]
+Type: separator; Caption: "PHP 设置"
+;WAMPPHP_PARAMSSTART
+Type: item; Caption: "allow url fopen"; Glyph: 13; Action: multi; Actions: allow_url_fopen
+Type: item; Caption: "allow url include"; Action: multi; Actions: allow_url_include
+Type: item; Caption: "auto globals jit"; Action: multi; Actions: auto_globals_jit
+Type: submenu; Caption: "date.timezone = UTC"; Submenu: date.timezone; Glyph: 9
+Type: item; Caption: "display errors"; Glyph: 13; Action: multi; Actions: display_errors
+Type: item; Caption: "display startup errors"; Glyph: 13; Action: multi; Actions: display_startup_errors
+Type: item; Caption: "expose PHP"; Glyph: 13; Action: multi; Actions: expose_php
+Type: item; Caption: "file uploads"; Glyph: 13; Action: multi; Actions: file_uploads
+Type: item; Caption: "ignore repeated errors"; Action: multi; Actions: ignore_repeated_errors
+Type: item; Caption: "ignore repeated source"; Action: multi; Actions: ignore_repeated_source
+Type: item; Caption: "implicit flush"; Action: multi; Actions: implicit_flush
+Type: item; Caption: "log errors"; Glyph: 13; Action: multi; Actions: log_errors
+Type: submenu; Caption: "max_execution_time = 120"; Submenu: max_execution_time; Glyph: 9
+Type: submenu; Caption: "max_input_time = 60"; Submenu: max_input_time; Glyph: 9
+Type: submenu; Caption: "memory_limit = 128M"; Submenu: memory_limit; Glyph: 9
+Type: submenu; Caption: "post_max_size = 8M"; Submenu: post_max_size; Glyph: 9
+Type: item; Caption: "register argc argv"; Action: multi; Actions: register_argc_argv
+Type: item; Caption: "report memleaks"; Glyph: 13; Action: multi; Actions: report_memleaks
+Type: item; Caption: "short open tag"; Action: multi; Actions: short_open_tag
+Type: item; Caption: "track errors"; Glyph: 13; Action: multi; Actions: track_errors
+Type: submenu; Caption: "upload_max_filesize = 2M"; Submenu: upload_max_filesize; Glyph: 9
+Type: item; Caption: "zend.enable_gc"; Glyph: 13; Action: multi; Actions: zend.enable_gc
+Type: item; Caption: "zlib output compression"; Action: multi; Actions: zlib.output_compression
+Type: item; Caption: "(XDebug) : Profiler Enable Trigger"; Action: multi; Actions: xdebug.profiler_enable_trigger
+Type: item; Caption: "xdebug.profiler_enable"; Action: multi; Actions: xdebug.profiler_enable
+Type: item; Caption: "xdebug.remote_enable"; Action: multi; Actions: xdebug.remote_enable
+Type: separator; Caption: "For information only"
+Type: item; Caption: "default_charset = UTF-8"; Glyph: 22; Action: multi; Actions: default_charset ;
+Type: item; Caption: "output_buffering = 4096"; Glyph: 22; Action: multi; Actions: output_buffering ;
+[allow_url_fopen]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php allow_url_fopen off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[allow_url_include]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php allow_url_include on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[auto_globals_jit]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php auto_globals_jit on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[default_charset]
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php.exe";Parameters: "msg.php 6 ZGVmYXVsdF9jaGFyc2V0 ClRoZSB2YWx1ZSBvZiB0aGlzIFBIUCBwYXJhbWV0ZXIgbXVzdCBiZSBtb2RpZmllZCBpbiB0aGUgZmlsZToKRjovd2FtcDY0L2Jpbi9hcGFjaGUvYXBhY2hlMi40LjIzL2Jpbi9waHAuaW5pCk5vdCB0byBjaGFuZ2UgdGhlIHdyb25nIGZpbGUsIHRoZSBiZXN0IHdheSB0byBhY2Nlc3MgdGhpcyBmaWxlIGlzOgpXYW1wbWFuYWdlciBpY29uLT5QSFAtPnBocC5pbmkK";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+[display_errors]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php display_errors off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[display_startup_errors]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php display_startup_errors off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[expose_php]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php expose_php off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[file_uploads]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php file_uploads off";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[ignore_repeated_errors]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php ignore_repeated_errors on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[ignore_repeated_source]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php ignore_repeated_source on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Action: resetservices
+Action: readconfig;
+[implicit_flush]
+Action: service; Service: wampapache64; ServiceAction: stop; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "switchPhpParam.php implicit_flush on";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "F:/wamp64/bin/php/php5.6.25/php-win.exe";Parameters: "refresh.php";WorkingDir: "F:/wamp64/scripts"; Flags: waituntilterminated
+Action: run; FileName: "net"; Parameters: "start wampapache64"; ShowCmd: hidden; Flags: waituntilterminated
+Acti

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="$.js"></script>
+</head>
+<style>
+    body{
+        height: 100%;
+        overflow: hidden;
+        background: url(63287417_p0.jpg) no-repeat ;
+        background-size: 100% 100%;
+    }
+    .fenshu{
+        width: 80px;
+        height: 80px;
+        border: 1px solid #ccc;
+        position: fixed;
+        right: 20px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: rgba(255,255,255,0.5);
+        text-align: center;
+        line-height: 80px;
+    }
+    .boxbox{
+        width:600px;
+        height:600px;
+        border: 1px solid #ccc;
+        margin: 0 auto;
+        position: relative;
+    }
+    .boxbox:after{
+        content: "";
+        clear: both;
+    }
+    .box{
+        width:100%;
+        height:100%;
+    }
+    .zhezhao{
+        width:600px;
+        height:600px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: #000;
+        color: white;
+        text-align: center;
+        line-height: 600px;
+        font-size: 60px;
+        overflow: hidden;
+        transition: height 2s;
+        cursor: pointer;
+    }
+    .zhezhaoactive{
+        height:0;
+    }
+    .box div{
+        width:30px;
+        height:30px;
+        box-sizing: border-box;
+        /*border: 1px  solid #15faf7;    !*布局是一个一个小格子*!*/
+        float: left;
+    }
+    .food{
+        background-color: #6144fa;
+        border-radius: 50%;
+    }
+    .snake{
+        background-color: #33fabf;
+    }
+</style>
+<body>
+<div class="boxbox">
+    <div class="box"></div>
+    <div class="zhezhao"><span>开始游戏</span></div>
+</div>
+<div class="fenshu">得分</div>
+</body>
+</html>
+<script>
+    $(function () {
+    	//开始游戏
+        let zhezhao=$(".zhezhao");
+        let kaishi=$(".zhezhao>span");//遮罩
+		kaishi.onclick=function () {
+			zhezhao.classList.add("zhezhaoactive");
+			 play();
+		}
+
+ function play() {
+
+		//游戏场景构建r
+		var box=$(".box");
+    for(var i=0;i<20;i++){//创建20行
+		for(var j=0;j<20;j++){//创建20列
+			var div=$("<div>");//创建一个div
+	        div.id="r"+j+"-"+i;//创建的每个div都有自己的id
+			box.append(div);//在box后面追加400(20*20)个div
+        }
+    }
+		//画蛇
+    var snake=[{x:0,y:0},{x:1,y:0},{x:2,y:0}];//蛇首次出现的位置
+        snake.forEach(function (value,index) {//遍历蛇的模块
+            var obj=$("#r"+value.x+"-"+value.y);//把蛇模块的每个id用一个变量保存起来;
+        	obj.classList.add("snake");//给obj加颜色.
+		})
+
+
+		//获取食物
+        function getfood() {//因为food被吃了以后会重新生成,所以要使用函数
+            do{//先判断在循环
+            	var x=Math.floor(Math.random()*20);//因为场景只有20*20,不可能让食物超出去.
+				var y=Math.floor(Math.random()*20);
+            }while (check(x,y)){//检查核对后执行x,y
+				var obj=$("#r"+x+"-"+y);//把所产生的食物的id用一个变量保存起来
+				obj.classList.add("food");//给食物加上颜色.
+                return {x:x,y:y};//获取食物函数的返回值
+            }
+		}
+          var food=getfood();//获取食物
+
+		//判断食物是不是出现在了蛇的身上
+        function check(m,n) {  //判断食物是不是出现在了蛇的身上是一个函数,因为有x轴和y轴
+           var result=snake.some(function (value) {//把判断的结果用一个变量包起来,返回的是boolean结果
+               return value.x==m&&value.y==n;//条件,snake的x==m并且snake的y==n;
+		   })
+            return result; //返回result; 也就是判断的整条结果.让食物不能再蛇上面
+		}
+
+
+
+
+
+		//让蛇动
+		var way="right";//默认向右走,
+        function move() {
+
+            var newheadx,newheady    //声明一下个,也就是走一步将出现的模块
+            var oldhead=snake[snake.length-1]
+            switch (way){
+                case "left"://如果是left,只会水平移动
+                	newheadx=oldhead.x-1;//新的x是旧的x-1;
+                	newheady=oldhead.y;//y不变
+                	break;//终止
+				case "right"://如果是right,只会水平移动
+					newheadx=oldhead.x+1;//新的x是旧的x+1;
+					newheady=oldhead.y;//y不变
+					break;//终止
+				case "bottom"://如果是left,只会水平移动
+					newheadx=oldhead.x;//新的x是旧的x-1;
+					newheady=oldhead.y+1;//y不变
+					break;//终止.
+				case "top"://如果是left,只会水平移动
+					newheadx=oldhead.x;//新的x是旧的x-1;
+					newheady=oldhead.y-1;//y不变
+					break;//终止
+            }
+
+
+
+            //判断游戏是否结束
+			if(newheadx<0||newheadx>19||newheady<0||newheady>19||check(newheadx,newheady)){
+				alert("game over");//如果大于X,Y>19，也就是撞墙了或者则是自己撞到了自己,弹出游戏结束
+				clearInterval(t);//清除时间函数
+                foodnum=0;//得分数 错的
+				return;
+			}
+			var newheadobj=$("#r"+newheadx+"-"+newheady);//用一个变量声明新蛇
+
+			newheadobj.className='snake';  //新蛇的类名，加了才能看见
+			snake.push({x:newheadx,y:newheady});//新蛇的x，y
+			//  新头的坐标和食物的坐标相同是是吃到了
+			if(newheady==food.y&&newheadx==food.x){//如果蛇吃到了食物
+				food=getfood();//重新获取食物
+				foodnum++;  //得分数
+				fenshu.innerHTML=`${foodnum}`;//在页面中的内容,因为外面是0,++之后要更新
+				fenshubox.append(fenshu);//追加
+
+			}else{
+				var endobj=$("#r"+snake[0].x+"-"+snake[0].y);
+				endobj.classList.remove('snake');
+				snake.shift();//数组的变化
+			}
+		}
+		var fenshu=$("<span>");//分数
+		var fenshubox=$(".fenshu");//父元素
+		var foodnum=0;//分数板
+		fenshu.innerHTML=`${foodnum}`;//在页面中的内容
+		fenshubox.append(fenshu);//追加
+
+
+
+
+
+
+
+		//判断方向
+        let t=setInterval(move,300);
+        document.onkeydown=function (e) {
+           var key=e.keyCode;//把键值用key变量保存起来.左37 上38 右39 下40
+           if(key=="37"){//如果key是37的时候
+           	if(way=="right"){
+           		return;
+            }
+            way="left";//让它往左走
+           }
+			if(key=="38"){
+				if(way=="bottom"){
+					return;
+				}
+				way="top";
+			}
+			if(key=="39"){
+				if(way=="left"){
+					return;
+				}
+				way="right";
+			}
+			if(key=="40"){
+				if(way=="top"){
+					return;
+				}
+				way="bottom";
+			}
+
+		}
+
+
+		//遮罩
+ }
+	})
+
+</script>

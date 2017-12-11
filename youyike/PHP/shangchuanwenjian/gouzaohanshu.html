@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file[]" multiple>
+    <input type="submit">
+</form>
+<div id="box"></div>
+</body>
+<script>
+    window.onload=function () {
+        class upload{
+            constructor(box,input,submit){
+                this.arr=[];
+                this.input=input;
+                this.sub=submit;
+                this.box=box;
+                //设置唯一索引
+                this.i=0;
+                this.url='load.php';
+                this.arrimg=['jpeg','png','gif'];
+            }
+            file(){
+                let that=this;
+                that.input.onchange=function () {
+                    //将获取到的文件转存到数组对象中
+                    [...this.files].forEach(function(value){
+                        that.arr.push({id:that.i,file:value});
+                        that.i++;
+                    });
+                    if(!that.check()){
+                        alert('格式不正确');
+                        return;
+                    }
+                    that.box.innerHTML='';
+                    that.create();
+                }
+                that.sub.onclick=function(e) {
+                    //阻止默认动作
+                    e.preventDefault();
+                    //循环发送ajax
+                    that.ajax();
+                }
+
+            }
+            check(){
+                for(let i=0;i<this.arr.length;i++){
+                    var type=this.arr[i].file.type;
+                    var size=this.arr[i].file.size;
+                    if(size>10*1024*1024||!this.arrimg.includes(type.split('/')[1])){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            create(){
+                let that=this;
+                this.arr.forEach(function(value){
+                    //实例化可读文件对象
+                    var reader = new FileReader();
+                    //转换文件可读格式
+                    reader.readAsDataURL(value.file);
+                    //设置转换过程事件
+                    reader.onload=function () {
+                        var div=document.createElement('div');
+                        div.id=value.id;
+                        div.innerHTML=`
+                     <img src=${this.result}>
+                     <span>×</span>
+                     <div id='pre${value.id}'></div>
+               `;
+                        // 删除功能
+                        div.children[1].onclick=function () {
+                            var id=div.id;
+                            that.arr=that.arr.filter(function(value){
+                                return value.id!=id;
+                            });
+                            box.removeChild(this.parentNode);
+                        }
+                        that.box.appendChild(div);
+                    }
+                })
+            }
+            ajax(){
+                let that=this;
+                this.arr.forEach(function(value){
+                    var ajax=new XMLHttpRequest();
+                    //创建表单信息
+                    var formdata=new FormData();
+                    //添加数据
+                    formdata.append('file',value.file);
+
+                    //ajax文件上传的事件对象
+                    ajax.upload.onprogress=function (e) {
+                        var obj=document.querySelector('#pre'+value.id);
+                        obj.style.width=e.loaded/e.total*100+'%';
+                    }
+                    //ajax成功执行后执行的对象
+                    ajax.onload=function () {
+                        var p=document.createElement('p');
+                        p.innerHTML=ajax.responseText;
+                        that.box.appendChild(p);
+                    }
+                    ajax.open('post',that.url,true);
+                    ajax.send(formdata);
+                })
+            }
+
+        }
+        var input=document.querySelector('input[type=file]');
+        var submit=document.querySelector('input[type=submit]');
+        var box=document.querySelector('#box');
+        var obj=new upload(box,input,submit);
+        // console.log(obj.url);
+        obj.file();
+    }
+</script>
+</html>

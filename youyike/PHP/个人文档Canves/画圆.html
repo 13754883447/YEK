@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1000" height="700" style="border: 1px solid #cccccc"></canvas>
+<!--格式一定要这样写-->
+</body>
+<script>
+    window.onload=function () {
+        let _canvas=document.querySelector("#canvas");//获取
+        let ctx=_canvas.getContext("2d");//获取它的环境 一般都写2d
+        ctx.beginPath();//告诉程序 我要画画了;
+        ctx.arc(100,100,10,0,360/180*Math.PI,true);//在距离左上角X,Y画一个圆,逆时针,true逆时针,false顺时针。
+        ctx.fill();//给Ctx填充颜色
+        ctx.fillStyle="rgb(50,100,150)";//格式严格要求
+		ctx.beginPath();//告诉程序 我要画画了;//如果不写,填充色就不会被加上，他就会被覆盖
+		ctx.arc(300,300,10,0,360/180*Math.PI,true);//在距离左上角X,Y画一个圆,逆时针,true逆时针,false顺时针。
+		ctx.fill();//给Ctx填充颜色
+0
+    .
+        //让圆动起来
+        let x=100;
+        let y=100;
+        let vx=3;//增长速度
+        let vy=5;
+        let gravity=1;
+        setInterval(function () {
+        	ctx.clearRect(0,0,_canvas.width,_canvas.height);//清除圆  否则会拉伸! 清除所有的圆！以前的也会没有了
+			ctx.fillStyle="rgb(150,100,150)";//格式严格要求
+			ctx.beginPath();//告诉程序 我要画画了;//如果不写,填充色就不会被加上，他就会被覆盖
+			ctx.arc(x,y,50,0,360/180*Math.PI,true);//在距离左上角X,Y画一个圆,逆时针,true逆时针,false顺时针。
+			ctx.fill();//给Ctx填充颜色
+            x=x+vx;//每次移动多少
+            y=y+vy;//每次移动多少
+            vy=vy+gravity;//每次加多少
+            if(x>_canvas.width-50||x<50){
+                vx*=-1;
+            }
+			if(y>_canvas.height-50){//碰撞墙,相反运动
+				vy*=-0.8;
+			}
+			if(Math.abs(vy)<0.2&&y>_canvas.height-50){
+                    gravity=0;
+                    vy=0;
+            }
+			if(vy==0){
+                vx*=0.98;
+            }
+		},50);//多长时间移动一次.
+
+
+	}
+</script>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style></style>
+<body>
+<canvas id="canvas" style="width:100%;height: 100%;" ></canvas>
+</body>
+</html>
+<script>
+	//new 实例化对象 并实现了继承
+    let sun=new Image();
+    let moon=new Image();
+    let earth=new Image();
+    //Image()	向画布上绘制图像、画布或视频
+
+    //获取图片连接
+    function init() {
+        sun.src="image/Canvas_sun.png";
+		moon.src="image/Canvas_moon.png";
+		earth.src="image/Canvas_earth.png";
+		window.requestAnimationFrame(draw);//实现动画的函数
+	}
+
+	function draw() {
+    	//getContext() 方法返回一个用于在画布上绘图的环境。
+        let ctx=document.querySelector("canvas").getContext("2d");//获取canvas的2d画布绘图的环境用ctx保存起来.
+
+        //globalCompositeOperation设置或返回新图像如何绘制到已有的图像上
+        //返回一个表示用来绘制的环境类型的环境。其本意是要为不同的绘制类型（2 维、3 维）提供不同的环境。当前，唯一支持的是 "2d"，它返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
+		ctx.globalCompositeOperation = 'destination-over';//ctx在新图像目的地不变
+
+        ctx.clearRect(0,0,300,300);//clearRect()	在给定的矩形内清除指定的像素
+
+
+        //fillRect() 方法绘制“已填色”的矩形。默认的填充颜色是黑色。
+		//提示：请使用 fillStyle 属性来设置用于填充绘图的颜色、渐变或模式。
+        ctx.fillstyle="rgba(0,0,0,0.4)";//fillStyle  填充样式
+
+
+        //strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式。
+		ctx.strokeStyle = "0rgba(0, 153, 255, 0.4)";
+
+
+		//save()	保存当前环境的状态
+		ctx.save();//保存ctx当前环境的状态
+
+        //translate()	重新映射画布上的 (0,0) 位置
+		ctx.translate(150, 150);
+
+
+
+		// Earth
+		var time = new Date();//获取一个新的时间
+		ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+		ctx.translate(105, 0);
+		ctx.fillRect(0, -12, 50, 24); // Shadow
+		ctx.drawImage(earth, -12, -12);
+
+		// Moon
+		ctx.save();
+		ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+		ctx.translate(0, 28.5);
+		ctx.drawImage(moon, -3.5, -3.5);
+		ctx.restore();
+
+		ctx.restore();
+
+		ctx.beginPath();
+		ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+		ctx.stroke();
+
+		ctx.drawImage(sun, 0, 0, 300, 300);
+
+
+
+		window.requestAnimationFrame(draw);//实现动画的函数
+	}
+	init();
+
+
+
+    
+</script>

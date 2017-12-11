@@ -1,0 +1,33 @@
+.Ab-1 {
+  width: 100%;
+  background: url(../images/bg-image-1.jpg) no-repeat;
+  background-size: cover; }
+
+.Ab-1body {
+  max-width: 1200px;
+  height: 335px;
+  margin: 0 auto;
+  color: white;
+  text-align: center;
+  position: relative; }
+  .Ab-1body > h2 {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size: 50px; }
+  .Ab-1body > p {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 25px;
+    font-size: 18px; }
+    .Ab-1body > p > a {
+      text-decoration: none; }
+
+.form {
+  padding: 25px;
+  text-align: center; }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #canvas{
+        width: 600px;
+        height:200px;
+    }
+</style>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
+<script>
+    window.onload=function () {
+        let canvas=document.querySelector("#canvas");//获取
+        console.log(canvas);
+        let huabu=canvas.getContext("2d");//给canvas
+        huabu.font="60px SS";//在SS画布上设置60px的字体  ss可以换名字(画布名称)
+        huabu.strokeText("哈哈哈哈哈哈哈",10,50);//创建空心字(没有填充背景) 的  内容 从左上角开始的位置
+	}
+</script>

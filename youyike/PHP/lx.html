@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src=""></script>
+    <!--<script src="Vue.js"></script>-->
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    function a(a) {
+        this.a=a;
+    }
+    a.prototype.b=12;
+    var b=new a('13');
+    console.log(b.a);
+    function convertCurrency(money) {
+        //汉字的数字
+        var cnNums = new Array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九');
+        //基本单位
+        var cnIntRadice = new Array('', '拾', '佰', '仟');
+        //对应整数部分扩展单位
+        var cnIntUnits = new Array('', '万', '亿', '兆');
+        //对应小数部分单位
+        var cnDecUnits = new Array('角', '分', '毫', '厘');
+        //整数金额时后面跟的字符
+        var cnInteger = '整';
+        //整型完以后的单位
+        var cnIntLast = '元';
+        //最大处理的数字
+        var maxNum = 999999999999999.9999;
+        //金额整数部分
+        var integerNum;
+        //金额小数部分
+        var decimalNum;
+        //输出的中文金额字符串
+        var chineseStr = '';
+        //分离金额后用的数组，预定义
+        var parts;
+        if (money == '') { return ''; }
+        money = parseFloat(money);
+        if (money >= maxNum) {
+            //超出最大处理数字
+            return '';
+        }
+        if (money == 0) {
+            chineseStr = cnNums[0] + cnIntLast + cnInteger;
+            return chineseStr;
+        }
+        //转换为字符串
+        money = money.toString();
+        if (money.indexOf('.') == -1) {
+            integerNum = money;
+            decimalNum = '';
+        } else {
+            parts = money.split('.');
+            integerNum = parts[0];
+            decimalNum = parts[1].substr(0, 4);
+        }
+        //获取整型部分转换
+        if (parseInt(integerNum, 10) > 0) {
+            var zeroCount = 0;
+            var IntLen = integerNum.length;
+            for (var i = 0; i < IntLen; i++) {
+                var n = integerNum.substr(i, 1);
+                var p = IntLen - i - 1;
+                var q = p / 4;
+                var m = p % 4;
+                if (n == '0') {
+                    zeroCount++;
+                } else {
+                    if (zeroCount > 0) {
+                        chineseStr += cnNums[0];
+                    }
+                    //归零
+                    zeroCount = 0;
+                    chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+                }
+                if (m == 0 && zeroCount < 4) {
+                    chineseStr += cnIntUnits[q];
+                }
+            }
+            chineseStr += cnIntLast;
+        }
+        //小数部分
+        if (decimalNum != '') {
+            var decLen = decimalNum.length;
+            for (var i = 0; i < decLen; i++) {
+                var n = decimalNum.substr(i, 1);
+                if (n != '0') {
+                    chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+                }
+            }
+        }
+        if (chineseStr == '') {
+            chineseStr += cnNums[0] + cnIntLast + cnInteger;
+        } else if (decimalNum == '') {
+            chineseStr += cnInteger;
+        }
+        return chineseStr;
+    }
+    console.log(convertCurrency(10025));
+    var num =452.26;
+    function isNum(num){
+        var tem=String(parseInt(num));
+        var a=tem.split('');
+        var t=a.reverse();
+        var n=0;
+        for(var i=3;i<tem.length;i++){
+            if(i%3==0){
+                var c=n+i;
+                n++;
+                t.splice(c,0,',');
+            }
+        }
+        var m= t.reverse();
+        var c= m.join('');
+        return c+num.toString().substr(num.toString().indexOf('.'));
+    }
+    console.log(isNum(num));
+    var str='https://www.baidu.com/s?ie=utf-8&f=3&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91&oq=js%2520%25E8%25BD%25AC%25E6%258D%25A2%25E6%2595%25B0%25E5%25AD%2597%25E4%25BD%258D%25E5%25A4%25A7%25E5%2586%2599&rsv_pq=981a9dfc00001e69&rsv_t=83a3dvr2MgkSUHYndjm2APoj%2F2%2F9YWxYPBiGhluNXSkurzzD2WbsU6KvAPk&rqlang=cn&rsv_enter=1&inputT=10953&rsv_sug3=60&rsv_sug1=61&rsv_sug7=100&rsv_sug2=1&prefixsug=%25E7%2599%25BE%25E5%25BA%25A6&rsp=3&rsv_sug4=10953&rsv_sug=2';
+    function isStr(str){
+        var s = str.substr(str.indexOf('?')+1);
+        var obj=new Object();
+        var arr=s.split("=");
+        var key=[];
+        var value=[];
+        arr.forEach((v,i)=>{
+           if(i%2===0){
+               key.push(v);
+           }else{
+               value.push(v);
+           }
+        });
+        for(var i=0;i<key.length;i++){
+            console.log(key[i],unescape(value[i]));
+//            obj.key[i]=value[i];
+        }
+        return obj
+    }
+    console.log(isStr(str));
+</script>

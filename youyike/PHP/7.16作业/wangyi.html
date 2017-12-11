@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/jquery.fullPage.css">
+    <link rel="stylesheet" href="css/wangyi.css">
+    <script src="js/jquery.fullPage.min.js"></script>
+</head>
+<body>
+<section id="dowebok">
+    <div class="section bj active">
+        <div class="logo">
+            <a href="" class="mail163"></a>
+            <a href="" class="main126"></a>
+            <a href="" class="mailyeah"></a>
+        </div>
+        <div class="logo1">
+            <img src="img/tt.png" alt="">
+        </div>
+        <div class="bjtext">
+            <p>轻，是一种坚守。</p>
+            <p>在喧嚣的世界中，是来者不拒，还是坚持初心？</p>
+            <p>我们选择重新思考，回归轻盈的邮箱体验。</p>
+            <p>网易邮箱简约版始终专注于邮箱的核心体验，我们一直小心翼翼，只为你留下清爽、体贴、</p>
+            <p>安静的邮箱生活。</p>
+        </div>
+        <div class="bjimg"></div>
+    </div>
+    <div class="section bj1">
+        <div class="title"></div>
+        <div class="bj1text">
+            <p>一直苦于邮箱杂乱却懒得整理？我们通过强大的智能分类系统，使你的</p>
+            <p>银行账单、注册邮件、联系人邮件等重要内容自动分门别类。</p>
+        </div>
+        <div class="bj1img"></div>
+        <div class="bj1img1"></div>
+        <div class="xinfen"></div>
+    </div>
+    <div class="section bj2">
+        <div class="bj2title"></div>
+        <div class="bj2text">
+            <p>传统的邮件会话仅仅起到聚合查看的作用，而我们希望提供真正的会话体验。</p>
+            <p>为此，我们引入了气泡样式，并重新设计了回复操作。</p>
+        </div>
+        <div class="bj2img"></div>
+        <div class="bj2img1"></div>
+        <div class="bj2img2"></div>
+    </div>
+    <div class="section bj3">
+        <div class="bj3title"></div>
+        <div class="bj3text">
+            <p>我们想让每一封邮件更加真切，坚持在邮箱中保留了头像。而现在，你的收件人</p>
+            <p>也能看到你的头像了，我们已经迫不及待地想让你开始这项全新的体验了！</p>
+        </div>
+        <div class="bj3imgbox">
+            <div class="bj3-img1"></div>
+            <div class="bj3-img2"></div>
+            <div class="bj3-img3"></div>
+            <div class="bj3-img4"></div>
+            <div class="bj3-img5"></div>
+        </div>
+    </div>
+    <div class="section bj4">
+        <div class="bj4img"></div>
+        <div class="bj4img1"></div>
+        <div class="bj4img2"></div>
+        <div class="bj4submit"></div>
+    </div>
+</section>
+<ul class="yuan">
+    <li><a href="#page1"></a></li>
+    <li><a href="#page2"></a></li>
+    <li><a href="#page3"></a></li>
+    <li><a href="#page4"></a></li>
+    <li><a href="#page5"></a></li>
+</ul>
+</body>
+<script>
+	$(function(){
+		$('.logo').addClass("logoin");
+		$('.logo1').addClass("logo1in");
+		$('.bjtext').addClass("bjtextin");
+		$('.bjimg').addClass("bjimgin");
+        $('#dowebok').fullpage({
+			anchors: ['page1', 'page2', 'page3', 'page4', 'page5'],
+			menu: '#menu',
+			navigation: true,
+            afterLoad:function (anchorLink,index) {
+                if(index=1){
+					$('.logo').removeClass("logoout").addClass("logoin");
+					$('.logo1').removeClass("logo1out").addClass("logo1in");
+					$('.bjtext').removeClass("bjtextout").addClass("bjtextin");
+					$('.bjimg').removeClass("bjimgout").addClass("bjimgin");
+                }
+                if(index=2){
+                	$(".title").removeClass("titleout").addClass("titlein");
+                	$(".bj1text").removeClass("bj1textout").addClass("bj1textin");
+                	$(".bj1img").removeClass("bj1imgout").addClass("bj1imgin");
+                	$(".bj1img1").removeClass("bj1img1out").addClass("bj1img1in");
+                	$(".xinfen").removeClass("xinfenout").addClass("xinfenin");
+                }
+                if(index=3){
+					$(".bj2title").removeClass("bj2titleout").addClass("bj2titlein");
+					$(".bj2text").removeClass("bj2textout").addClass("bj2textin");
+					$(".bj2img").removeClass("bj2imgout").addClass("bj2imgin");
+					$(".bj2img1").removeClass("bj2img1out").addClass("bj1img1in");
+					$(".bj2img2").removeClass("bj2img2out").addClass("bj2img2in");
+                }
+                if(index=4){
+					$(".bj3title").removeClass("bj3titleout").addClass("bj3titlein");
+					$(".bj3text").removeClass("bj3textout").addClass("bj3textin");
+					$(".bj3imgbox").removeClass("bj3imgboxout").addClass("bj3imgboxin");
+					$(".bj3-img1").removeClass("bj3-img1out").addClass("bj3-img1in");
+					$(".bj3-img2").removeClass("bj3-img2out").addClass("bj3-img2in");
+					$(".bj3-img3").removeClass("bj3-img3out").addClass("bj3-img3in");
+					$(".bj3-img4").removeClass("bj3-img4out").addClass("bj3-img4in");
+					$(".bj3-img5").removeClass("bj3-img5out").addClass("bj3-img5in");
+                }
+                if(index=5){
+                	$(".bj4img").removeClass("bj4imgout").addClass("bj4imgin");
+                	$(".bj4img1").removeClass("bj4img1out").addClass("bj4img1in");
+                	$(".bj4img2").removeClass("bj4img2out").addClass("bj4img2in");
+                	$(".bj4submit").removeClass("bj4submitout").addClass("bj4submitin");
+                }
+			},
+            onLeave:function (index,direction) {
+				if(index=1){
+					$('.logo').removeClass("logoin").addClass("logoout");
+					$('.logo1').removeClass("logo1in").addClass("logo1out");
+					$('.bjtext').removeClass("bjtextin").addClass("bjtextout");
+					$('.bjimg').removeClass("bjimgin").addClass("bjimgout");
+				}
+				if(index=2){
+					$(".title").removeClass("titlein").addClass("titleout");
+					$(".bj1text").removeClass("bj1textin").addClass("bj1textout");
+					$(".bj1img").removeClass("bj1imgin").addClass("bj1imgout");
+					$(".bj1img1").removeClass("bj1img1in").addClass("bj1img1out");
+					$(".xinfen").removeClass("xinfenin").addClass("xinfenout");
+				}
+				if(index=3){
+					$(".bj2title").removeClass("bj2titlein").addClass("bj2titleout");
+					$(".bj2text").removeClass("bj2textin").addClass("bj2textout");
+					$(".bj2img").removeClass("bj2imgin").addClass("bj2imgout");
+					$(".bj2img1").removeClass("bj2img1in").addClass("bj2img1out");
+					$(".bj2img2").removeClass("bj2img2in").addClass("bj2img2out");
+				}
+				if(index=4){
+					$(".bj3title").removeClass("bj3titlein").addClass("bj3titleout");
+					$(".bj3text").removeClass("bj3textin").addClass("bj3textout");
+					$(".bj3imgbox").removeClass("bj3imgboxin").addClass("bj3imgboxout");
+					$(".bj3-img1").removeClass("bj3-img1in").addClass("bj3-img1out");
+					$(".bj3-img2").removeClass("bj3-img2in").addClass("bj3-img2out");
+					$(".bj3-img3").removeClass("bj3-img3in").addClass("bj3-img3out");
+					$(".bj3-img4").removeClass("bj3-img4in").addClass("bj3-img4out");
+					$(".bj3-img5").removeClass("bj3-img5in").addClass("bj3-img5out");
+				}
+				if(index=5){
+					$(".bj4img").removeClass("bj4imgin").addClass("bj4imgout");
+					$(".bj4img1").removeClass("bj4img1in").addClass("bj4img1out");
+					$(".bj4img2").removeClass("bj4img2in").addClass("bj4img2out");
+					$(".bj4submit").removeClass("bj4submitin").addClass("bj4submitout");
+				}
+			}
+        });
+		})
+</script>
+</html>

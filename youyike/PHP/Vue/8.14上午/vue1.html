@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="public/Vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--<span v-bind:title="date">-->
+    <!--鼠标悬停几秒钟查看此处动态绑定的提示信息！-->
+    <!--</span>-->
+    <!--<p v-if="seen">看到我了吗？</p>-->
+    {{message}}
+    <!--自定义属性的格式，右侧为表达式，不是函数名-->
+    <button v-on:click="reverMessage">点击消息</button>
+    <!--{{[1,3,4].map(v=>v*2)}}-->
+    <ol>
+        <li v-for="(value,index) in categories">
+            <span>{{value.id}}--{{value.text}} </span>| <span v-on:click="remove(index)">*</span>
+        </li>
+        <!--<item v-bind:data="v" v-for="(v,i) in categories"></item>-->
+    </ol>
+    <!--v-model跟用户的输入框关联起来，自动更新用户输入的值-->
+    <input type="text" v-model="input">
+    <button v-on:click="add">add</button>
+
+</div>
+</body>
+</html>
+<script>
+    //组件，类似积木,只能看到自己里面的东西
+    Vue.component('item',{
+//        标签变成了tempate里面的内容
+        template:
+            `<li>
+                    <span>{{data.id}}-{{data.text}}</span>
+             </li>
+            `,
+        //属性，能够接收的属性
+        props:['data']
+    })
+    var app=new Vue({
+        //决定使用区域
+        el:'#app',
+        //呈现的数据放在data里面
+        data:{
+            input:'',
+            message:'hello word',
+            date:'页面加载于'+new Date(),
+            seen:true,
+            categories:[
+                {id:1,text:'学习了整个项目'},
+                {id:2,text:'牛逼'},
+                {id:3,text:'还行吧'},
+                {id:4,text:'理解了才行'}
+            ]
+        },
+        //调用的函数放在methods 里面
+
+        methods:{
+            reverMessage:function () {
+                //this特殊的对象，有data，methods里面的键
+                this.message='HELLO WORD';
+                console.log(this.input);
+//              this.message=this.message.split('').reverse().join('');
+            },
+            remove:function (i) {
+                this.categories.splice(i,1);
+            },
+
+            add:function () {
+                var maxId = -Infinity; //负无穷
+                this.categories.forEach(v=>{
+                    if(v.id>maxId){
+                        maxId=v.id;
+                    }
+                })
+                let o={
+                    id:maxId+1,
+                    text:this.input
+                }
+                this.categories.push(o);
+                this.input=''
+            }
+        }
+    });
+    //   1.数据驱动页面
+    //    2.组件化开发
+    //    {{}} v-bind  v-on v-model v-for
+    //    data  methods el template  props
+</script>
+</html>

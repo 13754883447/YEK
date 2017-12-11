@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../Vue.js"></script>
+</head>
+<body>
+<section id="vue">
+    <goodslist v-on:addclicked="add" :data="goodsData"></goodslist>
+    <car :data="carData" :total="total"></car>
+</section>
+</body>
+</html>
+<script>
+    Vue.component('goodslist',{
+        template:
+            `
+            <ul>
+                <li v-for="v in data">
+                    商品:{{v.name}},商品单价:{{v.price}}
+                    <span @click="add(v)" >数量:{{v.num}}+</span>
+                </li>
+            </ul>
+            `,
+        props:['data'],
+        methods:{
+            add:function (v) {
+                v.num++;
+                this.$emit('addclicked',v);       //发射一个自定义事件
+            }
+        }
+    })
+    Vue.component('car',{
+        template:
+            `
+            <ul>
+                <li v-for="v in data">
+                    商品:{{v.name}},商品价格:{{v.price}},数量:{{v.num}}
+                </li>
+            </ul>
+           <div>{{total}}</div>
+            `,
+        props:['data','total']
+    })
+    let vue=new Vue({
+        el:"#vue",
+        data:{
+            goodsData:[
+                {id:1,name:'橡胶',price:125,num:0},
+                {id:2,name:'苹果',price:125,num:0},
+            ],
+            carData:[]
+        },
+        methods:{
+            add:function (data) {
+                let t=this.carData.filter(v=>v.id===data.id);
+                if(!t.length){
+                    this.carData.push(data);
+                }
+            }
+        },
+        computed:{
+            total:function (value) {
+                let t=0;
+                this.carData.forEach(v=>{
+                    t+=v.num*v.price;
+                })
+                return t;
+            }
+        }
+    })
+</script>

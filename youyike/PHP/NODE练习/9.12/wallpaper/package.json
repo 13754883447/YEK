@@ -1,0 +1,19 @@
+{
+  "name": "wyywallpaper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "wyywallpaper": "./index.js"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "stream": "0.0.2",
+    "wallpaper": "^2.5.0"
+  }
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../Vue.js"></script>
+</head>
+<style>
+    #vue{
+        text-align: center;
+        padding: 0 200px;
+    }
+    .uncompleted{
+        margin-top: 50px;
+        width: 200px;
+        float: left;
+    }
+    .completed{
+        margin-top: 50px;
+        width: 200px;
+        float: right;
+    }
+</style>
+<body>
+<div id="vue">
+    <input type="text" v-model="todo">
+    <button v-on:click="add">添加</button>
+    <div class="uncompleted">
+        <h3 v-on:click="setState(1)">未完成-{{uncompleted.length}}</h3>
+        <ul v-show="state===1">
+            <li v-for="v in uncompleted" >{{v.id}}-{{v.title}}-{{v.done}}<button v-on:click="toggle(v.id)">完成了</button></li>
+        </ul>
+    </div>
+    <div class="completed" >
+        <h3 v-on:click="setState(2)">已完成-{{completed.length}}</h3>
+        <ul v-show="state===2">
+            <li v-for="v in completed">{{v.id}}-{{v.title}}-{{v.done}}            <button v-on:click="toggle(v.id)">没有完成</button></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+    let vue=new Vue({
+        el:"#vue",
+        data:{
+            todo:'',
+            list:[],
+            state :1
+        },
+        methods:{
+            add:function () {
+                var len=this.list.length;
+                let id=len?(this.list[len-1].id+1):1;
+                let o={
+                    id:id,
+                    title:this.todo,
+                    done:false,
+                }
+                this.list.push(o);
+                this.todo="";
+            },
+            toggle:function (id) {
+                this.list=this.list.map(v=>{
+                    if(v.id==id){
+                        v.done=!v.done;
+                    }
+                    return v;
+                })
+            },
+            setState:function (state ) {
+                return this.state =state ;
+            }
+        },
+        computed:{
+            completed:function (){
+                return this.list.filter(v=>v.done);
+            },
+            uncompleted:function (){
+                return this.list.filter(v=>!v.done);
+            }
+        },
+        watch:{
+            list:function () {
+                localStorage.todolist=JSON.stringify(this.list);
+            }
+        },
+        mounted:function () {
+            this.list=JSON.parse(localStorage.todolist);
+        }
+    })
+</script>
+</html>

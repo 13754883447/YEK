@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .span{
+        width: 30px;
+        height:30px;
+        background: rgba(0,0,0,.2);
+        position: absolute;
+        right:0;
+        top:0;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+    }
+</style>
+<body>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file[]" multiple>
+    <input type="submit">
+</form>
+<div id="box"></div>
+</body>
+<script>
+    let file=document.querySelector("input[type='file']");//获取
+    let box=document.querySelector("#box");//
+    var arr=[];
+    var index=0;
+    var max=1*1024*1024;//文件大小
+    var geshi=["jpeg","png","gif"];
+    file.onchange=function (e) {
+        console.log(arr);
+//        var files=this.files;
+        [...this.files].forEach(function (value) {
+            arr.push({id:index,file:value});
+            index++;
+        });
+        if(!check()){
+            alert("格式不正确");
+            return;
+        }
+        box.innerHTML="";
+            arr.forEach(function (value) {
+                var read=new FileReader();
+                read.readAsDataURL(value.file);
+                read.onload=function () {
+                    var div=document.createElement("div");
+                    div.id=value.id;
+                    div.style.cssText="width:300px;height:200px;border:1px solid #000;position:relative;float:left;";
+                    div.innerHTML=`
+                        <img src="${this.result}" style="width: 100%;" height="100%">
+                         <span class="span">X</span>
+                          <div id="pre${value.id}"  style="background: red;position: absolute;bottom:0;left:0;height:2px;width: 0"></div>
+                    `;
+                    box.appendChild(div);
+//                    div.onclick=function (e) {
+//                        let mubiao=e.target||e.srcElement;
+//                        if(mubiao.className=="span"){
+//
+//                        }
+//                    }
+                    div.children[1].onclick=function () {//删除事件
+                        var id=div.id;
+                        arr=arr.filter(function (value) {
+                            return value.id!=id;
+                        });
+                        box.removeChild(this.parentNode);
+                    };
+                }
+            })
+    };
+    function check() {//检查格式的函数
+            for (var i = 0; i < arr.length; i++) {
+                let size = arr[i].size;//size大小
+                let type = arr[i].file.type;//type什么类型
+                if (size > max || !geshi.includes(type.split("/")[1])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    let submit=document.querySelector("input[type='submit']");//获取submit
+    submit.onclick=function (e) {
+        e.preventDefault();//阻止submit的默认提交动作
+        arr.forEach(function (value) {
+        var formdata=new FormData();//H5新属性  让携带的数据发送过去，
+        formdata.append("file",value.file)//fil,被FormData.append()方法转换成了字符串（字段的值（value）
+        var ajax=new XMLHttpRequest();//XMLHttpRequest 对象用于在后台与服务器交换数据。
+        ajax.upload.onprogress=function (e) {//进度条事件,h5ajax的新属性
+            var obj=document.querySelector('#pre'+value.id);
+            obj.style.width=e.loaded/e.total*100+'%';
+        };
+        ajax.onload=function () {
+            alert(ajax.responseText);
+        };
+            ajax.open('post','upload.php',true);
+            ajax.send(formdata);
+        })
+    }
+</script>
+</html>

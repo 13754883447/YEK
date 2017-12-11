@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../../Vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <sid><h1>1</h1></sid>
+</div>
+</body>
+</html>
+<script>
+    Vue.component('sid', {
+//        template:`
+//        <div>
+//        <slot></slot>
+//        <ul>
+//        <li>1</li>
+//</ul>
+//        <input type="text" placeholder="这是框" ref="a">
+//</div>
+//        `,
+        template: `<lianxi><h1>123</h1></lianxi>`,
+        //生命周期函数
+        props: {
+            info: String
+        },
+        data() {
+            return{
+
+            }
+        },
+        components:{
+            //引入其他模板
+            lianxi
+        },
+        beforeCreate: function () {
+            //只能取数据
+        },
+        created: function () {
+
+        },
+        beforeMount: function () {
+
+        },
+        mounted() {
+//            this.$refs.a.focus();
+            this.path=location.hash.slice(1);
+            window.addEventListener('hashchange',(h)=>{
+                this.path=location.hash.slice(1)
+            })
+        },
+        beforeDestroy: function () {
+
+        },
+        destroyed: function () {
+
+        },
+    });
+    let app = new Vue({
+        el: '#app',
+        data:{
+            path:''
+        },
+        mounted() {
+//            this.$refs.a.focus();
+            this.path=location.hash.slice(1);
+            window.addEventListener('hashchange',(h)=>{
+                this.path=location.hash.slice(1)
+            })
+        },
+        render:function (c) {
+            var com;
+            routes.forEach(v=>{
+                if(v.path===this.path){
+                    com=v.component;
+                }
+            })
+            return c(com)
+        }
+    });
+    //路由 route
+    const A={template:'<div>123154<a href="#/b">跳转</div>'};
+    const B={template:'<div>ABC</div>'};
+    const routes=[
+        {
+            path:'A',
+            components:A
+        },
+        {
+            path:'B',
+            components:B
+        }
+    ];
+
+</script>

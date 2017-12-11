@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../Vue.js"></script>
+</head>
+<style>
+    .active{
+        font-size: 28px;
+        color: red;
+    }
+</style>
+<body>
+<div id="vue">
+    <div :class="{active:isactive}">56464dadjh</div>
+    <div :style="{color:red}">das</div>
+    <div :style="[active]">ssss</div>
+    <button @click="con+=1">点击</button>
+    <p>这个按钮被点击了{{con}}次</p>
+    <button v-on:click="greet">Greet</button>
+    <button v-on:click="say('hi')">Say hi</button>
+    <a href="www.baidu.com" v-on:keyup.enter="">XX</a>
+    <input v-on:keyup.13="submit">
+</div>
+</body>
+</html>
+<script>
+    let vue=new Vue({
+        el:"#vue",
+        data:{
+            isactive:true,
+            active:{
+                "color":"red"
+            },
+            red:"blue",
+            font:"26px",
+            con:0
+        },
+        methods: {
+            greet: function (event) {
+                // `this` 在方法里指当前 Vue 实例
+                alert('Hello ' + this.name + '!')
+                // `event` 是原生 DOM 事件
+                if (event) {
+                    alert(event.target.tagName)
+                }
+            },
+            say:function (message) {
+                alert(message);
+            }
+        }
+    })
+</script>
